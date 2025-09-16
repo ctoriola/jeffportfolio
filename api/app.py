@@ -8,7 +8,8 @@ import os
 # Configure Flask app with proper paths for Vercel
 app = Flask(__name__, 
            template_folder='../templates',
-           static_folder='../static')
+           static_folder='../static',
+           static_url_path='/static')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-here-change-in-production')
 
 # Simple in-memory storage for demo (will reset on each deployment)
@@ -39,6 +40,26 @@ class LoginForm(FlaskForm):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/test-static')
+def test_static():
+    """Test route to check static file paths"""
+    import os
+    static_path = os.path.join(app.root_path, '../static')
+    static_exists = os.path.exists(static_path)
+    css_path = os.path.join(static_path, 'assets/css/main.css')
+    css_exists = os.path.exists(css_path)
+    
+    return f"""
+    <h1>Static File Debug</h1>
+    <p>App root path: {app.root_path}</p>
+    <p>Static folder: {app.static_folder}</p>
+    <p>Static URL path: {app.static_url_path}</p>
+    <p>Static path exists: {static_exists}</p>
+    <p>CSS file exists: {css_exists}</p>
+    <p>Static path: {static_path}</p>
+    <p>CSS path: {css_path}</p>
+    """
 
 @app.route('/book', methods=['GET', 'POST'])
 def book():
