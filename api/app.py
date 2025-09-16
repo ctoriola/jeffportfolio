@@ -5,7 +5,10 @@ from wtforms.validators import DataRequired, Email, Length
 from datetime import datetime, date
 import os
 
-app = Flask(__name__)
+# Configure Flask app with proper paths for Vercel
+app = Flask(__name__, 
+           template_folder='../templates',
+           static_folder='../static')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-here-change-in-production')
 
 # Simple in-memory storage for demo (will reset on each deployment)
