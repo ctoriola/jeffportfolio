@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block title %}Book a Session - Jeffery Chinda Photography{% endblock %}
+
+{% block extra_css %}
+<style>
+    .booking-page {
+        background: linear-gradient(135deg, #063231 0%, #0a4a47 100%);
+        min-height: 100vh;
+        padding: 100px 0;
+    }
+    .booking-form-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .booking-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .booking-header h2 {
+        color: #063231;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #063231;
+        font-weight: 500;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #063231;
+        box-shadow: 0 0 0 3px rgba(6, 50, 49, 0.1);
+    }
+    .btn-submit {
+        background: #063231;
+        color: white;
+        padding: 15px 40px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        width: 100%;
+        font-size: 16px;
+    }
+    .btn-submit:hover {
+        background: #0a4a47;
+    }
+    .btn-back {
+        background: transparent;
+        color: #063231;
+        border: 2px solid #063231;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+    .btn-back:hover {
+        background: #063231;
+        color: white;
+        text-decoration: none;
+    }
+    .service-info {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    .service-info h6 {
+        color: #063231;
+        margin-bottom: 10px;
+    }
+    .pricing-info {
+        font-size: 14px;
+        color: #666;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="booking-page">
+    <div class="container">
+        <div class="booking-form-card">
+            <a href="{{ url_for('index') }}" class="btn-back">
+                <i class="fas fa-arrow-left me-2"></i> Back to Home
+            </a>
+            
+            <div class="booking-header">
+                <h2>Book Your Photography Session</h2>
+                <p class="text-muted">Fill out the form below and we'll get back to you within 24 hours</p>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" novalidate>
+                {{ form.hidden_tag() }}
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control") }}
+                            {% if form.name.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.name.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control") }}
+                            {% if form.email.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.email.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    {{ form.phone.label(class="form-label") }}
+                    {{ form.phone(class="form-control") }}
+                    {% if form.phone.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in form.phone.errors %}{{ error }}{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.service_type.label(class="form-label") }}
+                    {{ form.service_type(class="form-control", id="serviceSelect") }}
+                    {% if form.service_type.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in form.service_type.errors %}{{ error }}{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="service-info" id="serviceInfo" style="display: none;">
+                    <h6>Service Details:</h6>
+                    <div id="serviceDescription"></div>
+                    <div class="pricing-info mt-2" id="servicePricing"></div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form.event_date.label(class="form-label") }}
+                            {{ form.event_date(class="form-control") }}
+                            {% if form.event_date.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.event_date.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form.event_time.label(class="form-label") }}
+                            {{ form.event_time(class="form-control") }}
+                            {% if form.event_time.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.event_time.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    {{ form.location.label(class="form-label") }}
+                    {{ form.location(class="form-control") }}
+                    {% if form.location.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in form.location.errors %}{{ error }}{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.message.label(class="form-label") }}
+                    {{ form.message(class="form-control", rows="4", placeholder="Tell us more about your vision, specific requirements, or any questions you have...") }}
+                    {% if form.message.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in form.message.errors %}{{ error }}{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-camera me-2"></i> Submit Booking Request
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('serviceSelect').addEventListener('change', function() {
+    const serviceInfo = document.getElementById('serviceInfo');
+    const serviceDescription = document.getElementById('serviceDescription');
+    const servicePricing = document.getElementById('servicePricing');
+    
+    const services = {
+        'portrait': {
+            description: 'Professional headshots, family portraits, and individual sessions that capture your unique personality and style.',
+            pricing: 'Starting at $299 - Includes 1-hour session, professional editing, and 10 high-resolution images'
+        },
+        'event': {
+            description: 'Comprehensive event coverage including corporate events, parties, celebrations, and special occasions.',
+            pricing: 'Starting at $799 - Includes full event coverage, professional editing, and online gallery'
+        },
+        'wedding': {
+            description: 'Complete wedding day photography capturing every precious moment from preparation to celebration.',
+            pricing: 'Starting at $1,999 - Includes full day coverage, engagement session, and complete wedding gallery'
+        },
+        'commercial': {
+            description: 'Product photography, corporate headshots, and business marketing visuals for your brand.',
+            pricing: 'Custom pricing based on project scope - Contact for detailed quote'
+        }
+    };
+    
+    if (this.value && services[this.value]) {
+        serviceDescription.textContent = services[this.value].description;
+        servicePricing.textContent = services[this.value].pricing;
+        serviceInfo.style.display = 'block';
+    } else {
+        serviceInfo.style.display = 'none';
+    }
+});
+</script>
+{% endblock %}

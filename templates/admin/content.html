@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Management - Jeffery Chinda Photography</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            background: #063231;
+            min-height: 100vh;
+            color: white;
+        }
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 15px 20px;
+        }
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .main-content {
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        .content-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .section-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 px-0 sidebar">
+                <div class="p-3">
+                    <h4>Admin Panel</h4>
+                    <small class="text-muted">Jeffery Chinda Photography</small>
+                </div>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                        <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_bookings') }}">
+                        <i class="fas fa-calendar-check me-2"></i> Bookings
+                    </a>
+                    <a class="nav-link active" href="{{ url_for('admin_content') }}">
+                        <i class="fas fa-edit me-2"></i> Content Management
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_logout') }}">
+                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 main-content">
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Content Management</h2>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addContentModal">
+                            <i class="fas fa-plus me-2"></i> Add Content
+                        </button>
+                    </div>
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <!-- Quick Edit Forms -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="content-card">
+                                <h5><i class="fas fa-heading me-2"></i> Hero Section</h5>
+                                <form method="POST" action="{{ url_for('update_content') }}">
+                                    <input type="hidden" name="section" value="hero">
+                                    <div class="mb-3">
+                                        <label class="form-label">Main Title</label>
+                                        <input type="hidden" name="key" value="title">
+                                        <input type="text" name="value" class="form-control" 
+                                               value="CREATIVE PHOTOGRAPHY" placeholder="Main hero title">
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="content-card">
+                                <h5><i class="fas fa-user me-2"></i> About Section</h5>
+                                <form method="POST" action="{{ url_for('update_content') }}">
+                                    <input type="hidden" name="section" value="about">
+                                    <div class="mb-3">
+                                        <label class="form-label">About Title</label>
+                                        <input type="hidden" name="key" value="title">
+                                        <input type="text" name="value" class="form-control" 
+                                               value="ABOUT JEFFERY" placeholder="About section title">
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h5><i class="fas fa-align-left me-2"></i> About Description</h5>
+                        <form method="POST" action="{{ url_for('update_content') }}">
+                            <input type="hidden" name="section" value="about">
+                            <input type="hidden" name="key" value="description">
+                            <div class="mb-3">
+                                <textarea name="value" class="form-control" rows="4" 
+                                          placeholder="About section description">Jeffery Chinda is a passionate photographer with an eye for detail and a commitment to excellence. Specializing in portrait, event, and commercial photography, Jeffery brings creativity and professionalism to every shoot, ensuring each moment is captured beautifully.</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-outline-primary">Update Description</button>
+                        </form>
+                    </div>
+                    
+                    <!-- Existing Content Items -->
+                    {% if content_items %}
+                    <div class="content-card">
+                        <h5><i class="fas fa-list me-2"></i> All Content Items</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Section</th>
+                                        <th>Key</th>
+                                        <th>Value</th>
+                                        <th>Last Updated</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in content_items %}
+                                    <tr>
+                                        <td>
+                                            <span class="section-badge">{{ item.section }}</span>
+                                        </td>
+                                        <td>{{ item.key }}</td>
+                                        <td>
+                                            <div style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">
+                                                {{ item.value[:100] }}{% if item.value|length > 100 %}...{% endif %}
+                                            </div>
+                                        </td>
+                                        <td>{{ item.updated_at.strftime('%m/%d/%Y %I:%M %p') }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#editModal{{ item.id }}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Instructions -->
+                    <div class="content-card">
+                        <h5><i class="fas fa-info-circle me-2"></i> Instructions</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Content Sections:</h6>
+                                <ul class="list-unstyled">
+                                    <li><strong>hero:</strong> Main banner content</li>
+                                    <li><strong>about:</strong> About section content</li>
+                                    <li><strong>services:</strong> Services section content</li>
+                                    <li><strong>portfolio:</strong> Portfolio section content</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Image Management:</h6>
+                                <p class="text-muted">
+                                    To change images, upload new files to the <code>assets/img/</code> directory 
+                                    and update the image paths in the HTML templates or through content management.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Content Modal -->
+    <div class="modal fade" id="addContentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Content</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" action="{{ url_for('update_content') }}">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Section</label>
+                            <select name="section" class="form-select" required>
+                                <option value="">Select section</option>
+                                <option value="hero">Hero</option>
+                                <option value="about">About</option>
+                                <option value="services">Services</option>
+                                <option value="portfolio">Portfolio</option>
+                                <option value="contact">Contact</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Key</label>
+                            <input type="text" name="key" class="form-control" required 
+                                   placeholder="e.g., title, description, subtitle">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Value</label>
+                            <textarea name="value" class="form-control" rows="4" required 
+                                      placeholder="Content value"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Content</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

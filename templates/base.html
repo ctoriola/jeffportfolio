@@ -1,0 +1,151 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Jeffery Chinda - Professional Photography Portfolio{% endblock %}</title>
+    <meta name="description" content="Jeffery Chinda - Professional photographer specializing in portraits, events, and artistic photography. View my portfolio and book your session today.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='assets/img/logo/favicon.png') }}">
+    
+    <!-- CSS here -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome-all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/swiper-bundle.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/odometer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/ion.rangeSlider.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/effect-slicer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/defauls-spacing.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}">
+    
+    <style>
+        .booking-form-overlay {
+            position: absolute;
+            top: 50%;
+            right: 5%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            z-index: 10;
+        }
+        
+        .booking-form-overlay h3 {
+            color: #063231;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #063231;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #063231;
+        }
+        
+        .btn-book {
+            background: #063231;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+        
+        .btn-book:hover {
+            background: #0a4a47;
+        }
+        
+        .alert {
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        
+        @media (max-width: 768px) {
+            .booking-form-overlay {
+                position: relative;
+                right: auto;
+                top: auto;
+                transform: none;
+                margin: 20px;
+                max-width: none;
+            }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    {% block content %}{% endblock %}
+
+    <!-- JS here -->
+    <script src="{{ url_for('static', filename='assets/js/vendor/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jsap/gsap.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jsap/gsap-scroll-smoother.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jsap/gsap-scroll-trigger.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jsap/gsap-scroll-to-plugin.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jsap/gsap-split-text.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/ion.rangeSlider.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/effect-slicer.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/imagesloaded.pkgd.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery.odometer.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery-appear.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/swiper-bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/nice-select.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/wow.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/ajax-form.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
