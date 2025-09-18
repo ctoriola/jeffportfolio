@@ -105,27 +105,171 @@
         }
         
         .btn-book-main:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(6, 50, 49, 0.4);
+            background: linear-gradient(135deg, #0a4a47 0%, #063231 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(6, 50, 49, 0.3);
         }
         
         .btn-book-main i {
             margin-right: 10px;
         }
         
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        /* Photography-focused styling */
+        .photographer-badge {
+            display: inline-block;
+        }
+        
+        .badge-text {
+            background: linear-gradient(135deg, #063231 0%, #0a4a47 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: inline-block;
+            box-shadow: 0 10px 30px rgba(6, 50, 49, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .badge-text::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .badge-text:hover::before {
+            left: 100%;
+        }
+        
+        .badge-text i {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        .photographer-tagline .tagline-text {
+            font-size: 24px;
+            color: #063231;
+            font-weight: 300;
+            margin: 0;
+            font-style: italic;
+            opacity: 0.9;
+        }
+        
+        .specialties {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .specialty-item {
+            color: #063231;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .specialty-item:hover {
+            color: #0a4a47;
+            transform: translateY(-2px);
+        }
+        
+        .specialty-divider {
+            color: #063231;
+            font-size: 18px;
+            opacity: 0.6;
+        }
+        
+        /* Enhanced carousel styling */
+        .td-hero-6-slider {
+            margin-top: 40px;
+            position: relative;
+        }
+        
+        .td-hero-6-slider::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                to right,
+                rgba(6, 50, 49, 0.1) 0%,
+                transparent 20%,
+                transparent 80%,
+                rgba(6, 50, 49, 0.1) 100%
+            );
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .td-hero-6-thumb {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .td-hero-6-thumb:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .td-hero-6-thumb img {
+            transition: transform 0.3s ease;
+        }
+        
+        .td-hero-6-thumb:hover img {
+            transform: scale(1.05);
+        }
+        
         @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
             .booking-form-card {
                 padding: 30px 20px;
-                margin: 20px 10px;
             }
             
             .booking-form-card h3 {
                 font-size: 24px;
             }
             
-            .btn-book-main {
-                padding: 15px 40px;
-                font-size: 16px;
+            .photographer-tagline .tagline-text {
+                font-size: 20px;
+            }
+            
+            .specialties {
+                gap: 10px;
+            }
+            
+            .specialty-item {
+                font-size: 14px;
             }
         }
     </style>
@@ -389,7 +533,12 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="td-hero-6-title-wrap text-center pb-90">
+                                    <div class="td-hero-6-title-wrap text-center pb-50">
+                                        <div class="photographer-badge mb-30 wow fadeInUp" data-wow-delay=".3s" data-wow-duration="1s">
+                                            <span class="badge-text">
+                                                <i class="fas fa-camera"></i> PROFESSIONAL PHOTOGRAPHER
+                                            </span>
+                                        </div>
                                         <h2 class="td-hero-6-title  wow fadeInUp" data-wow-delay=".5s" data-wow-duration="1s">
                                             <span>JEFFERY
                                                 <video loop="" muted="" autoplay="" playsinline="">
@@ -401,6 +550,18 @@
                                                 CHINDA
                                             </span>
                                         </h2>
+                                        <div class="photographer-tagline mt-30 wow fadeInUp" data-wow-delay=".7s" data-wow-duration="1s">
+                                            <p class="tagline-text">Capturing Life's Most Precious Moments</p>
+                                            <div class="specialties mt-20">
+                                                <span class="specialty-item">Portraits</span>
+                                                <span class="specialty-divider">•</span>
+                                                <span class="specialty-item">Weddings</span>
+                                                <span class="specialty-divider">•</span>
+                                                <span class="specialty-item">Events</span>
+                                                <span class="specialty-divider">•</span>
+                                                <span class="specialty-item">Commercial</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -496,6 +657,15 @@
                     <div class="container-fluid container-1680 wow fadeInUp" data-wow-delay=".9s" data-wow-duration="1s">
                         <div class="row">
                             <div class="col-lg-12">
+                                <div class="portfolio-showcase-header text-center mb-40">
+                                    <h4 style="color: #063231; font-weight: 600; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;">
+                                        <i class="fas fa-images" style="margin-right: 10px;"></i>
+                                        Featured Portfolio
+                                    </h4>
+                                    <p style="color: #063231; opacity: 0.8; font-size: 16px; margin: 0;">
+                                        A glimpse into my recent photography work
+                                    </p>
+                                </div>
                                 <div class="swiper-container td-hero-6-slider">
                                     <div class="swiper-wrapper slide-transtion">
                                         <div class="swiper-slide">
